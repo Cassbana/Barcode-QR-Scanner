@@ -24,13 +24,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun startCamera() {
         viewBinding.scanner.start(
-            this@MainActivity,
+            lifecycleOwner = this@MainActivity,
             onBarcodeDetected = {
                 Toast.makeText(this, "Detected $it", Toast.LENGTH_SHORT).show()
-            }, onPermissionNeeded = {
+            },
+            onPermissionNeeded = { permissions ->
                 ActivityCompat.requestPermissions(
                     this@MainActivity,
-                    it,
+                    permissions,
                     REQUEST_CODE_PERMISSIONS
                 )
             })

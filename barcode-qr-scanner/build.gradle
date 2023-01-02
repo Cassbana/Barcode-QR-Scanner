@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'com.cassbana.barcode_qr_scanner'
-    compileSdk 33
+    compileSdk 31
 
     defaultConfig {
         minSdk 21
-        targetSdk 33
+        targetSdk 31
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -62,7 +62,7 @@ afterEvaluate {
 
                 groupId = 'com.github.cassbana'
                 artifactId = 'barcode-qr-scanner'
-                version = '0.1.0'
+                version = '0.1.1'
             }
         }
     }
