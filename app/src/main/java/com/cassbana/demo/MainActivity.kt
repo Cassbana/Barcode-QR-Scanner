@@ -1,9 +1,13 @@
 package com.cassbana.demo
 
-import androidx.appcompat.app.AppCompatActivity
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.cassbana.barcode_qr_scanner.ScannerBuilder
+import com.cassbana.barcode_qr_scanner.algorithm.Algorithm
 import com.cassbana.demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,23 +22,33 @@ class MainActivity : AppCompatActivity() {
         startCamera()
 
         viewBinding.button.setOnClickListener {
-            startCamera()
+            viewBinding.scanner.startScanning()
         }
     }
 
     private fun startCamera() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_CODE_PERMISSIONS
+            )
+            return
+        }
         viewBinding.scanner.start(
             lifecycleOwner = this@MainActivity,
-            onBarcodeDetected = {
-                Toast.makeText(this, "Detected $it", Toast.LENGTH_SHORT).show()
-            },
-            onPermissionNeeded = { permissions ->
-                ActivityCompat.requestPermissions(
-                    this@MainActivity,
-                    permissions,
-                    REQUEST_CODE_PERMISSIONS
-                )
-            })
+            scannerBuilder = ScannerBuilder(
+                onBarcodeDetected = {
+                    Toast.makeText(this, "Detected $it", Toast.LENGTH_SHORT).show()
+                },
+                algorithm = Algorithm.DuplicateSequence(n = 10),
+                stopScanningOnResult = false
+            )
+        )
     }
 
     companion object {
