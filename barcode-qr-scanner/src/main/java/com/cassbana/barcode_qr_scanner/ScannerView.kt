@@ -26,7 +26,12 @@ class ScannerView @JvmOverloads constructor(
     private lateinit var builder: ScannerBuilder
     private lateinit var cameraController: LifecycleCameraController
 
-
+    /**
+     * Starts the camera preview and the scanning feature based on the scannerBuilder.
+     * Requires Camera permission, otherwise the view is going to be blacked.
+     * @param scannerBuilder Builder required to specify scanning behaviour
+     * @param lifecycleOwner for either activity or fragment so the view can be lifecycle aware
+     */
     @RequiresPermission(Manifest.permission.CAMERA)
     fun start(scannerBuilder: ScannerBuilder, lifecycleOwner: LifecycleOwner) {
         builder = scannerBuilder
@@ -54,6 +59,10 @@ class ScannerView @JvmOverloads constructor(
         })
     }
 
+    /**
+     * Starts the scanning process, call only if you set ScannerBuilder.stopScanningOnResult = true
+     * @see ScannerBuilder.stopScanningOnResult
+     */
     fun startScanning() {
         builder.startScanning(cameraController, context)
     }

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 onBarcodeDetected = {
                     Toast.makeText(this, "Detected $it", Toast.LENGTH_SHORT).show()
                 },
-                algorithm = Algorithm.MajorityOfN(50),
+                algorithm = Algorithm.DuplicateSequence(n = 10),
                 stopScanningOnResult = false
             )
         )
