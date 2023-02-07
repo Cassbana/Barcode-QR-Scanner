@@ -28,6 +28,7 @@ class ScannerBuilder(
 ) {
     private var cameraExecutor: ExecutorService? = null
     private var controller: CameraController? = null
+    private var isStopped: Boolean = false
 
     // TODO:: Add option to specify format
     private val barcodeScanner: BarcodeScanner by lazy {
@@ -37,10 +38,13 @@ class ScannerBuilder(
                 .build()
         )
     }
+
     private val callback = { barcode: String ->
-        onBarcodeDetected(barcode)
+        if (!isStopped) {
+            onBarcodeDetected(barcode)
+        }
         if (stopScanningOnResult) {
-            removeAnalyzer()
+            pauseScanning()
         }
     }
 
@@ -55,8 +59,9 @@ class ScannerBuilder(
         controller?.clearImageAnalysisAnalyzer()
     }
 
-
     fun startScanning(cameraController: CameraController, context: Context) {
+        isStopped = false
+        removeAnalyzer()
         cameraExecutor = Executors.newSingleThreadExecutor()
         controller = cameraController
         controller?.setImageAnalysisAnalyzer(
@@ -66,9 +71,19 @@ class ScannerBuilder(
                 CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED,
                 ContextCompat.getMainExecutor(context)
             ) { result: MlKitAnalyzer.Result? ->
-                collectingResultAlgorithm.onNewResult(result, barcodeScanner)
+                if (!isStopped) {
+                    collectingResultAlgorithm.onNewResult(result, barcodeScanner)
+                }
             }
         )
+    }
+
+    fun pauseScanning() {
+        isStopped = true
+    }
+
+    fun resumeScanning() {
+        isStopped = false
     }
 
     fun onDestroy() {
@@ -77,6 +92,4 @@ class ScannerBuilder(
         collectingResultAlgorithm.clear()
         cameraExecutor?.shutdown()
     }
-
-
 }

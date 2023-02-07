@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         startCamera()
 
         viewBinding.button.setOnClickListener {
-            viewBinding.scanner.startScanning()
+            viewBinding.scanner.resumeScanning()
         }
     }
 
@@ -58,8 +58,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults:
-        IntArray
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {

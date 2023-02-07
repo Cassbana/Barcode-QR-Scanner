@@ -23,8 +23,8 @@ class ScannerView @JvmOverloads constructor(
     private var binding: ScannerViewBinding? =
         ScannerViewBinding.inflate(LayoutInflater.from(context), this, true)
 
-    private lateinit var builder: ScannerBuilder
-    private lateinit var cameraController: LifecycleCameraController
+    private var builder: ScannerBuilder? = null
+    private var cameraController: LifecycleCameraController? = null
 
     /**
      * Starts the camera preview and the scanning feature based on the scannerBuilder.
@@ -39,20 +39,18 @@ class ScannerView @JvmOverloads constructor(
         startScanning()
     }
 
-
     private fun startCamera(lifecycleOwner: LifecycleOwner) {
         cameraController = LifecycleCameraController(context)
-        cameraController.bindToLifecycle(lifecycleOwner)
+        cameraController?.bindToLifecycle(lifecycleOwner)
         binding?.previewView?.controller = cameraController
         handleLifeCycle(lifecycleOwner)
     }
-
 
     private fun handleLifeCycle(lifecycleOwner: LifecycleOwner) {
         lifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                 if (event == Lifecycle.Event.ON_DESTROY) {
-                    builder.onDestroy()
+                    builder?.onDestroy()
                     binding = null
                 }
             }
@@ -60,11 +58,27 @@ class ScannerView @JvmOverloads constructor(
     }
 
     /**
-     * Starts the scanning process, call only if you set ScannerBuilder.stopScanningOnResult = true
+     * Starts the scanning process
      * @see ScannerBuilder.stopScanningOnResult
      */
     fun startScanning() {
-        builder.startScanning(cameraController, context)
+        cameraController?.let {
+            builder?.startScanning(it, context)
+        }
     }
 
+    /**
+     * Resumes the scanning process, call if you stopped scanner or set ScannerBuilder.stopScanningOnResult = true
+     * @see ScannerBuilder.stopScanningOnResult
+     */
+    fun resumeScanning() {
+        builder?.resumeScanning()
+    }
+
+    /**
+     * Pauses the scanning process
+     */
+    fun pauseScanning() {
+        builder?.pauseScanning()
+    }
 }
