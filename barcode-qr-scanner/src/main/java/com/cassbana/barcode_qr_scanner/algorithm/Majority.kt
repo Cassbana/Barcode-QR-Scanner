@@ -3,8 +3,10 @@ package com.cassbana.barcode_qr_scanner.algorithm
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import com.google.mlkit.vision.barcode.BarcodeScanner
 
-class Majority(private val n: Int, private val onBarcodeDetected: (Barcode: String) -> Unit) :
-    CollectingResultAlgorithm() {
+class Majority(
+    private val n: Int,
+    private val onBarcodeDetected: (Barcode: String) -> Unit
+) : CollectingResultAlgorithm() {
 
     override val detectedValues: MutableList<String> by lazy {
         mutableListOf()
@@ -29,5 +31,4 @@ class Majority(private val n: Int, private val onBarcodeDetected: (Barcode: Stri
             clear()
         }
     }
-
 }
