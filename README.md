@@ -1,5 +1,6 @@
 
-# Barcode/QR Scanner  
+# Barcode/QR Scanner  [![](https://jitpack.io/v/Cassbana/Barcode-QR-Scanner.svg)](https://jitpack.io/#Cassbana/Barcode-QR-Scanner) ![Downloads](https://jitpack.io/v/Cassbana/Barcode-QR-Scanner/month.svg)
+
 A barcode and QR code scanner lifecycle aware android view based on CameraX API and ML Kit's Barcode Scanner.  
 Check: [ML Kit Barcode Scanning](https://developers.google.com/ml-kit/vision/barcode-scanning)  
   
@@ -8,7 +9,7 @@ Include jitpack
 ``` gradle  
  allprojects { 
 	 repositories { 
-		  ...
+		  ..
 		  maven { url 'https://jitpack.io' } 
 	  } 
  }
@@ -49,7 +50,11 @@ scanner.start(
  
  **stopScannningOnResult**: Specify whether you want the scanning process to stop after finished or not. Default value is false, If you need to start scanning again call the following function.
  ```kotlin
-scanner.startScanning()
+scanner.resumeScanning()
+ ``` 
+ To stop scanning manually, you call the following function.
+ ```kotlin
+scanner.pauseScanning()
  ``` 
  
  ## Collecting Result Algorithm 
@@ -59,7 +64,7 @@ scanner.startScanning()
 The scanner collects `n` results and outputs the most common result.
 ```kotlin
 ScannerBuilder(
-	onBarcodeDetected = { ... },
+	onBarcodeDetected = { .. },
 	algorithm = Algorithm.MajorityOfN(n = 10)
 )
 ```
@@ -69,24 +74,23 @@ ScannerBuilder(
 The scanner collects results till we have `n` duplicate sequence.
 ```kotlin
 ScannerBuilder(
-	onBarcodeDetected = { ... },
+	onBarcodeDetected = { .. },
 	algorithm = Algorithm.DuplicateSequence(n = 10)
 )
 ```
 
 
-
 # Supported Formats  
   
- - Code 128 (`FORMAT_CODE_128`)  
-- Code 39 (`FORMAT_CODE_39`)  
-- Code 93 (`FORMAT_CODE_93`)  
-- Codabar (`FORMAT_CODABAR`)  
-- EAN-13 (`FORMAT_EAN_13`)  
-- EAN-8 (`FORMAT_EAN_8`)  
-- ITF (`FORMAT_ITF`)  
-- UPC-A (`FORMAT_UPC_A`)  
-- UPC-E (`FORMAT_UPC_E`)  
-- QR Code (`FORMAT_QR_CODE`)  
-- PDF417 (`FORMAT_PDF417`)  
-- Aztec (`FORMAT_AZTEC`)
+ - Code 128 
+- Code 39
+- Code 93  
+- Codabar
+- EAN-13
+- EAN-8
+- ITF
+- UPC-A
+- UPC-E
+- QR Code
+- PDF417
+- Aztec
