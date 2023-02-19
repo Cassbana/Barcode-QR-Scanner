@@ -24,13 +24,13 @@ import java.util.concurrent.Executors
 class ScannerBuilder(
     internal val onBarcodeDetected: (barcode: String) -> Unit,
     internal val algorithm: Algorithm = Algorithm.MajorityOfN(20),
-    private val stopScanningOnResult: Boolean = false
+    private val stopScanningOnResult: Boolean = false,
+    private val format: Format = Format.ALL_FORMATS
 ) {
     private var cameraExecutor: ExecutorService? = null
     private var controller: CameraController? = null
     private var isStopped: Boolean = false
 
-    // TODO:: Add option to specify format
     private val barcodeScanner: BarcodeScanner by lazy {
         BarcodeScanning.getClient(
             BarcodeScannerOptions.Builder()
@@ -50,8 +50,8 @@ class ScannerBuilder(
 
     private val collectingResultAlgorithm: CollectingResultAlgorithm by lazy {
         when (algorithm) {
-            is Algorithm.MajorityOfN -> Majority(algorithm.n, callback)
-            is Algorithm.DuplicateSequence -> DuplicateSequence(algorithm.n, callback)
+            is Algorithm.MajorityOfN -> Majority(algorithm.n, callback, format)
+            is Algorithm.DuplicateSequence -> DuplicateSequence(algorithm.n, callback, format)
         }
     }
 

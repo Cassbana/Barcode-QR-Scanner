@@ -1,11 +1,14 @@
 package com.cassbana.barcode_qr_scanner.algorithm
 
 import androidx.camera.mlkit.vision.MlKitAnalyzer
+import com.cassbana.barcode_qr_scanner.Format
+import com.cassbana.barcode_qr_scanner.FormatUtil
 import com.google.mlkit.vision.barcode.BarcodeScanner
 
 class Majority(
     private val n: Int,
-    private val onBarcodeDetected: (Barcode: String) -> Unit
+    private val onBarcodeDetected: (Barcode: String) -> Unit,
+    private val format: Format
 ) : CollectingResultAlgorithm() {
 
     override val detectedValues: MutableList<String> by lazy {
@@ -15,7 +18,9 @@ class Majority(
     override fun onNewResult(analyzerResult: MlKitAnalyzer.Result?, scanner: BarcodeScanner) {
         val barcodeResults = analyzerResult?.getValue(scanner)
 
-        if ((barcodeResults.isNullOrEmpty()) || (barcodeResults.first() == null)) {
+        if (((barcodeResults.isNullOrEmpty()) || (barcodeResults.first() == null)) ||
+            !FormatUtil.matches(format = format, barcodeResults.first())
+        ) {
             return
         }
         barcodeResults.first().rawValue?.let {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.cassbana.barcode_qr_scanner.Format
 import com.cassbana.barcode_qr_scanner.ScannerBuilder
 import com.cassbana.barcode_qr_scanner.algorithm.Algorithm
 import com.cassbana.demo.databinding.ActivityMainBinding
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Detected $it", Toast.LENGTH_SHORT).show()
                 },
                 algorithm = Algorithm.DuplicateSequence(n = 10),
-                stopScanningOnResult = false
+                stopScanningOnResult = false,
+                format = Format.BARCODE
             )
         )
     }
