@@ -16,7 +16,7 @@ Include jitpack
  ```  
 Add in your app module  
 ``` gradle  
- implementation 'com.github.Cassbana:Barcode-QR-Scanner:0.2.0'
+ implementation 'com.github.Cassbana:Barcode-QR-Scanner:0.4.0'
  ```  
   
 ## Usage  
@@ -36,7 +36,8 @@ scanner.start(
 	scannerBuilder = ScannerBuilder(  
         	onBarcodeDetected = { Toast.makeText(this, "Detected $it", Toast.LENGTH_SHORT).show() },  
 		algorithm = Algorithm.MajorityOfN(50),  
-		stopScanningOnResult = false
+		stopScanningOnResult = false,
+		format = Format.BARCODE
 	)  
 )
  ```  
@@ -81,8 +82,10 @@ ScannerBuilder(
 
 
 # Supported Formats  
+You can sepcify format options by passing `Format.All_FORMATS`, `BARCODE` or `QR_CODE` in `ScannerBuilder` constructor.
   
- - Code 128 
+  These are the supported formats:
+- Code 128 
 - Code 39
 - Code 93  
 - Codabar
